@@ -3,6 +3,8 @@ package
 	import flash.desktop.ClipboardFormats;
 	import flash.desktop.NativeDragManager;
 	import flash.display.Sprite;
+	import flash.events.DataEvent;
+	import flash.events.Event;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
 	import flash.text.TextField;
@@ -41,6 +43,7 @@ package
 			alpha = out;
 			if(!txt) return;
 			var dropFiles:Array = e.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			
 			for each (var file:File in dropFiles){
 				switch (file.extension){
 					case "png" :
@@ -55,6 +58,7 @@ package
 					default:
 						txt.text = "Not a recognised file format";
 				}
+				dispatchEvent(new DataEvent("DragFile",true,false,file.nativePath));
 			}
 		}
 		private function doDragExit(e:NativeDragEvent):void
